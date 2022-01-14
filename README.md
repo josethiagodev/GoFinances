@@ -1,2 +1,2 @@
 # GoFinances
- GoFinances -  desenvolvido com React Native via Expo (Crtões em Destaque)
+ GoFinances - Aplicação desenvolvida com React Native via Expo CLI
