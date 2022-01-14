@@ -1,3 +1,2 @@
 # GoFinances
-<<<<<<< HEAD
- GoFinances - Aplicação desenvolvida com React Native via Expo CLI
+GoFinances - Aplicação mobile desenvolvida com React Native via Expo CLI
