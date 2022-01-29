@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-
 import { FlatList } from 'react-native';
 import { Feather } from '@expo/vector-icons'; 
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
@@ -51,7 +50,7 @@ export const UserName = styled.Text`
     font-family: ${ ({ theme }) => theme.fonts.medium };
 `;
 
-export const BtnClosed = styled(Feather)`
+export const BtnLogout = styled(Feather)`
     color: ${ ({ theme }) => theme.colors.secundary };
     font-size: ${RFValue(24)}px;
 `;

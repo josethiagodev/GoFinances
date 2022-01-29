@@ -11,7 +11,7 @@ import {
     Photo, 
     User, 
     UserName,
-    BtnClosed, 
+    BtnLogout, 
     ResultsCards, 
     MyTransactions, 
     TitleTransactions, 
@@ -84,7 +84,7 @@ export function Dashboard(){
                         </User>
                     </UserInfo>
 
-                    <BtnClosed name="power" />
+                    <BtnLogout name="power" />
                 </UserWrapper>
             </Header>
 

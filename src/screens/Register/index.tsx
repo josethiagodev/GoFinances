@@ -10,7 +10,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import { useForm } from 'react-hook-form';
 
-import { Input } from '../../components/Forms/Input';
 import { InputForm } from '../../components/Forms/InputForm';
 import { Button } from '../../components/Forms/Button';
 import { TransactionTypeButton } from '../../components/Forms/TransactionTypeButton';
@@ -149,7 +148,7 @@ export function Register() {
                     </Fields>
                     
                     <Button 
-                        title="Enviar" 
+                        title="Salvar" 
                         onPress={handleSubmit(handleRegister)}
                     />
                 </ContentForm>
