@@ -7,8 +7,12 @@ import {
 } from 'react-native';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import uuid from 'react-native-uuid';
 
+// Hooks
 import { useForm } from 'react-hook-form';
+import { useNavigation } from '@react-navigation/native';
 
 import { InputForm } from '../../components/Forms/InputForm';
 import { Button } from '../../components/Forms/Button';
@@ -30,6 +34,10 @@ interface FormData {
     amount: string;
 }
 
+type NavigationProps = {
+    navigate:(screen:string) => void;
+}
+
 // Add Schema com YUP
 const schema = Yup.object().shape({
     name: Yup
@@ -49,15 +57,21 @@ export function Register() {
     // Escondendo a Modal de categoria ao abrir
     const [categoryModalOpen, setCategoryModalOpen] = useState(false);
 
+    // Definindo chave para coleção de dados
+    const dataKey = '@gofinances:transactions';
+
     // Armazenando as categorias
     const [category, setCategory] = useState({
         key: 'category', 
         name: 'Categoria'
     });
 
+    const navigation = useNavigation<NavigationProps>();
+
     const {
         control, 
         handleSubmit, 
+        reset, 
         formState: { errors }
     } = useForm({
         // Forçar o envio do formulário (submit) siga o padrão do 'Schema via Yup'
@@ -80,7 +94,7 @@ export function Register() {
     }
 
     // Registrando dados do formulário (react hook form)
-    function handleRegister(form : FormData) {
+    async function handleRegister(form : FormData) {
         // Validação dos dados (states)
         if(!transactionType)
             return Alert.alert('Selecione o tipo da transação')
@@ -88,14 +102,46 @@ export function Register() {
         if(category.key === 'category')
             return Alert.alert('Selecione uma categoria')
 
-        const dataRegister = {
+        const newTransaction = {
+            id: String(uuid.v4()),
             name: form.name, 
             amount: form.amount, 
             transactionType, 
-            category: category.key
+            category: category.key, 
+            date: new Date(),
         }
 
-        console.log(dataRegister);
+        try {
+            // Recuperando todos os dados do AsyncStorage
+            const dataAll = await AsyncStorage.getItem(dataKey);
+            // Convertendo texto para objeto (JSON)
+            const currentData = dataAll ? JSON.parse(dataAll) : [];
+
+            // Formatando dados
+            const dataFormatted = [
+                ...currentData, 
+                newTransaction
+            ];
+
+            // Definindo item com AsyncStorage
+            await AsyncStorage.setItem(
+                // stringify = Convertendo objeto (JSON) para texto
+                dataKey, JSON.stringify(dataFormatted)
+            );
+            
+            reset();
+            setTransactionType('');
+            setCategory({
+                key: 'category', 
+                name: 'Categoria'
+            });
+
+            navigation.navigate('Listagem');
+
+        } catch (error) {
+            console.log(error);
+            Alert.alert("Não foi possível salvar");
+        }
     }
 
     return (
